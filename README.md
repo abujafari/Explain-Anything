@@ -1,163 +1,82 @@
 # Explain Anything - Chrome Extension
 
-A Chrome extension that provides instant AI explanations for any selected text on web pages. Simply select text, click the popup icon, and get a clear explanation powered by your choice of LLM providers.
+A Chrome extension that provides instant AI explanations and translations for any selected text on web pages. Designed with a minimal, modern black-and-white aesthetic, it integrates seamlessly into your browsing experience.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Manifest](https://img.shields.io/badge/manifest-v3-green)
+![Version](https://img.shields.io/badge/version-1.1.0-black)
+![Manifest](https://img.shields.io/badge/manifest-v3-black)
 
 ## Features
 
-- **Text Selection Detection**: Automatically detects when you select text on any webpage
-- **Quick Access Popup**: Small icon appears near your selection for easy access
-- **Rich Explanations**: Get detailed, markdown-formatted explanations
-- **Multiple LLM Providers**:
-  - **OpenRouter** (API Key) - Access to Claude, GPT-4, Gemini, Llama, and more
-  - **Gemini** (Cookie Auth) - Use your existing Google Gemini session
-  - **ChatGPT** (Cookie Auth) - Use your existing ChatGPT session
-  - **Claude** (Cookie Auth) - Use your existing Claude session
-- **Customizable**: Set your preferred language, model, and system prompt
-- **Beautiful UI**: Clean, modern interface with markdown rendering and syntax highlighting
+- **Text Selection Detection**: Automatically detects when you select text on any webpage.
+- **Dual Action Popup**: A minimal black pill appears near your selection offering two options:
+  - **Explain**: Get clear, educational explanations with context.
+  - **Translate**: Get detailed translations with examples, idioms, and usage context.
+- **Rich AI Responses**:
+  - Markdown formatting.
+  - Syntax highlighting for code.
+  - RTL (Right-to-Left) text support for languages like Arabic, Persian, and Hebrew.
+- **Supported LLM Providers**:
+  - **OpenRouter** (API Key) - Access Claude, GPT-4, Llama 3, and more.
+  - **Gemini** (API Key) - Use Google's Gemini models (Free tier available).
+- **Modern Minimal UI**: sleek black & white interface inspired by modern design systems (shadcn/ui).
+- **Customizable**: Configure your preferred language, model, and system prompts.
 
 ## Installation
 
 ### From Source (Developer Mode)
 
-1. Clone or download this repository
-2. Generate the icons:
+1. Clone or download this repository.
+2. Generate the icons (requires Node.js):
    ```bash
    node scripts/generate-icons.js
    ```
-3. Open Chrome and navigate to `chrome://extensions/`
-4. Enable "Developer mode" in the top right
-5. Click "Load unpacked" and select the extension directory
+3. Open Chrome and navigate to `chrome://extensions/`.
+4. Enable **"Developer mode"** in the top right corner.
+5. Click **"Load unpacked"** and select the extension directory (`explain-anything`).
 6. The extension is now installed!
 
-### First-Time Setup
+### Configuration
 
-1. After installation, the settings page will open automatically
-2. Choose your preferred LLM provider
-3. For **OpenRouter**: Enter your API key from [openrouter.ai/keys](https://openrouter.ai/keys)
-4. For **Cookie-based providers**: Make sure you're logged into the respective service (Gemini, ChatGPT, or Claude)
-5. Select your preferred model and output language
-6. Optionally customize the system prompt
-7. Click "Save Settings"
+1. After installation, the settings page should open automatically. (If not, click the extension icon and select "Settings").
+2. **Select a Provider**:
+   - **OpenRouter**: Great for accessing a wide variety of models. Get a key at [openrouter.ai/keys](https://openrouter.ai/keys).
+   - **Gemini**: Excellent free tier options. Get a key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
+3. **Enter API Key**: Paste your key into the corresponding field.
+4. **Select Model**: Choose the AI model you want to use (e.g., `gemini-1.5-flash`, `anthropic/claude-3-haiku`).
+5. **Set Language**: Choose the language you want the AI to respond in.
+6. Click **"Save Settings"**.
 
 ## Usage
 
-1. **Select Text**: Highlight any text on a webpage
-2. **Click the Icon**: A small purple icon appears near your selection
-3. **Get Explanation**: Click the icon to open the explanation modal
-4. **Read & Copy**: View the formatted response, copy it if needed
-5. **Close**: Click outside the modal or press Escape to close
+1. **Select Text**: Highlight any text on a webpage.
+2. **Choose Action**: A small black popup will appear next to your cursor with two icons:
+   - **Left Icon (Sparkles)**: Explain the selected text.
+   - **Right Icon (Translate)**: Translate the selected text.
+3. **View Result**: A clean modal will open displaying the AI's response.
+4. **Copy**: Click the copy icon to save the response to your clipboard.
+5. **Close**: Click the close icon (X), click outside the modal, or press `Esc`.
 
-## Settings
-
-Access settings by:
-- Right-clicking the extension icon → "Options"
-- Or clicking the extension icon and selecting "Settings"
-
-### Available Options
-
-| Setting | Description |
-|---------|-------------|
-| **Language** | Output language for explanations (English, Spanish, French, etc.) |
-| **Provider** | LLM service to use (OpenRouter, Gemini, ChatGPT, Claude) |
-| **Model** | Specific AI model (varies by provider) |
-| **System Prompt** | Custom instructions for how the AI should respond |
-| **API Key** | Required only for OpenRouter |
-
-## LLM Providers
-
-### OpenRouter (Recommended)
-- Requires API key from [openrouter.ai](https://openrouter.ai)
-- Pay-per-use pricing
-- Access to many models including Claude, GPT-4, Gemini, Llama, Mistral, etc.
-- Most reliable option
-
-### Gemini (Cookie Auth)
-- Free with Google account
-- Log in at [gemini.google.com](https://gemini.google.com)
-- Uses your existing browser session
-
-### ChatGPT (Cookie Auth)
-- Works with free or Plus accounts
-- Log in at [chatgpt.com](https://chatgpt.com)
-- Uses your existing browser session
-
-### Claude (Cookie Auth)
-- Works with free or Pro accounts
-- Log in at [claude.ai](https://claude.ai)
-- Uses your existing browser session
-
-**Note**: Cookie-based providers use reverse-engineered APIs and may break if the services update their interfaces.
-
-## Permissions
-
-The extension requires:
-- `activeTab` - To detect text selection on the current page
-- `storage` - To save your settings
-- `cookies` - To read session cookies for cookie-based providers
-- Host permissions for API endpoints
-
-## Development
-
-### Project Structure
+## Project Structure
 
 ```
 explain-anything/
 ├── manifest.json           # Extension manifest (V3)
 ├── src/
-│   ├── content/           # Content script (selection detection, popup)
-│   ├── background/        # Service worker (API routing)
+│   ├── content/           # Content script (UI, selection logic)
+│   ├── background/        # Service worker (API handling)
 │   ├── options/           # Settings page
-│   ├── providers/         # LLM provider implementations
-│   └── lib/               # Shared utilities
+│   └── providers/         # API integrations (Gemini, OpenRouter)
 ├── assets/                # Icons
-├── scripts/               # Build scripts
+├── scripts/               # Utility scripts
 └── README.md
 ```
 
-### Building Icons
-
-```bash
-node scripts/generate-icons.js
-```
-
-### Testing
-
-1. Load the extension in developer mode
-2. Navigate to any webpage
-3. Select some text
-4. Click the popup icon
-5. Verify the explanation appears
-
-## Troubleshooting
-
-### "Not logged in" errors
-- For cookie-based providers, make sure you're logged into the respective service
-- Try refreshing the service's webpage and retry
-
-### No popup appears
-- Check if the extension is enabled in `chrome://extensions/`
-- Reload the page you're trying to use it on
-- Make sure you're selecting at least 2 characters
-
-### API errors
-- For OpenRouter: Verify your API key is correct and has credits
-- For cookie-based: Try logging out and back in to the service
-
 ## Privacy
 
-- Selected text is sent to your chosen LLM provider for processing
-- Settings are stored locally in Chrome sync storage
-- No data is collected by the extension itself
-- Cookie-based auth uses only session cookies from the respective services
+- **No Data Collection**: The extension does not collect or track your browsing data.
+- **Direct Communication**: Selected text is sent directly from your browser to your chosen LLM provider (OpenRouter or Google) solely for the purpose of generating the response.
+- **Local Storage**: Your API keys and settings are stored locally in your browser's sync storage.
 
 ## License
 
 MIT License - Feel free to modify and distribute.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit issues and pull requests.
-
